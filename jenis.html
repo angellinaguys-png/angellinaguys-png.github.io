@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jenis-Jenis Topeng - Galeri Topeng Nusantara</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #3e2723 0%, #4e342e 50%, #5d4037 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .logo {
+            font-size: 2rem;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #d2691e 0%, #8b4513 100%);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #f4a460 0%, #daa520 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Content Section */
+        .content-section {
+            margin-bottom: 4rem;
+        }
+
+        .content-section h2 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #f4a460 0%, #daa520 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Jenis Grid */
+        .jenis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .jenis-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .jenis-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Image Container */
+        .jenis-image {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .jenis-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .mask-icon {
+            font-size: 6rem;
+            position: relative;
+            z-index: 1;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Untuk gambar asli - uncomment jika sudah ada gambar */
+        .jenis-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .jenis-card:hover .jenis-image img {
+            transform: scale(1.1);
+        }
+
+        /* Card Header */
+        .jenis-header {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .jenis-header h3 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .region {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Card Body */
+        .jenis-body {
+            padding: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .jenis-body p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .jenis-body strong {
+            color: #f4a460;
+        }
+
+        /* Klasifikasi Grid */
+        .klasifikasi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .klasifikasi-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .klasifikasi-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .klasifikasi-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #f4a460;
+        }
+
+        .klasifikasi-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .jenis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mask-icon {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="logo">🎭</span>
+                <span class="brand-text">Topeng Nusantara</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="sejarah.html">Sejarah Topeng</a></li>
+                <li><a href="jenis.html" class="active">Jenis-Jenis Topeng</a></li>
+                <li><a href="crud.html">Kelola Data</a></li>
+            </ul>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1>Jenis-Jenis Topeng Nusantara</h1>
+            <p class="subtitle">Mengenal Keragaman Topeng dari Berbagai Daerah di Indonesia</p>
+        </div>
+
+        <div class="content-section">
+            <div class="jenis-grid">
+                <!-- Topeng Cirebon -->
+                <div class="jenis-card">
+                    <div class="jenis-header" style="background: linear-gradient(135deg, #8B4513 0%, #654321 100%);">
+                        <div class="jenis-image">
+                            <img src="images/topeng-cirebon.jpg" alt="Topeng Cirebon">
+                        </div>
+                        <h3>Topeng Cirebon</h3>
+                        <span class="region">Jawa Barat</span>
+                    </div>
+                    <div class="jenis-body">
+                        <p><strong>Karakteristik:</strong> Memiliki 5 karakter utama (Panji, Samba, Rumyang, Tumenggung, dan Klana)</p>
+                        <p><strong>Kegunaan:</strong> Pertunjukan tari topeng yang menceritakan kisah Panji</p>
+                        <p><strong>Ciri Khas:</strong> Warna cerah, detail ukiran halus, ekspresi yang khas untuk setiap karakter</p>
+                    </div>
+                </div>
+
+                <!-- Topeng Barong -->
+                <div class="jenis-card">
+                    <div class="jenis-header" style="background: linear-gradient(135deg, #A0522D 0%, #8B4513 100%);">
+                        <div class="jenis-image">
+                            <img src="images/topeng-barong.jpg" alt="Topeng Barong">
+                        </div>
+                        <h3>Topeng Barong</h3>
+                        <span class="region">Bali</span>
+                    </div>
+                    <div class="jenis-body">
+                        <p><strong>Karakteristik:</strong> Topeng besar menyerupai singa dengan mata melotot dan taring besar</p>
+                        <p><strong>Kegunaan:</strong> Tarian sakral yang melambangkan pertarungan kebaikan melawan kejahatan</p>
+                        <p><strong>Ciri Khas:</strong> Dihiasi bulu, cermin, dan ornamen emas yang mewah</p>
+                    </div>
+                </div>
+
+                <!-- Topeng Malangan -->
+                <div class="jenis-card">
+                    <div class="jenis-header" style="background: linear-gradient(135deg, #CD853F 0%, #A0522D 100%);">
+                        <div class="jenis-image">
+                            <img src="images/topeng-malangan.jpg" alt="Topeng Malangan">
+                        </div>
+                        <h3>Topeng Malangan</h3>
+                        <span class="region">Jawa Timur</span>
+                    </div>
+                    <div class="jenis-body">
+                        <p><strong>Karakteristik:</strong> Topeng yang digunakan dalam pertunjukan wayang topeng</p>
+                        <p><strong>Kegunaan:</strong> Dramatisasi cerita Panji dan Ramayana</p>
+                        <p><strong>Ciri Khas:</strong> Gaya naturalis dengan proporsi wajah yang hampir realistis</p>
+                    </div>
+                </div>
+
+                <!-- Topeng Betawi -->
+                <div class="jenis-card">
+                    <div class="jenis-header" style="background: linear-gradient(135deg, #D2691E 0%, #8B4513 100%);">
+                        <div class="jenis-image">
+                            <img src="images/topeng-betawi.jpg" alt="Topeng Betawi">
+                        </div>
+                        <h3>Topeng Betawi</h3>
+                        <span class="region">Jakarta</span>
+                    </div>
+                    <div class="jenis-body">
+                        <p><strong>Karakteristik:</strong> Topeng dengan karakter yang kuat dan ekspresif</p>
+                        <p><strong>Kegunaan:</strong> Pertunjukan topeng blantek dan wayang topeng</p>
+                        <p><strong>Ciri Khas:</strong> Warna mencolok, ekspresi lucu atau menyeramkan</p>
+                    </div>
+                </div>
+
+                <!-- Topeng Reog -->
+                <div class="jenis-card">
+                    <div class="jenis-header" style="background: linear-gradient(135deg, #8B6914 0%, #654321 100%);">
+                        <div class="jenis-image">
+                            <img src="images/topeng-reog.jpg" alt="Topeng Reog">
+                        </div>
+                        <h3>Topeng Reog</h3>
+                        <span class="region">Jawa Timur (Ponorogo)</span>
+                    </div>
+                    <div class="jenis-body">
+                        <p><strong>Karakteristik:</strong> Topeng singa dengan mahkota bulu merak yang besar dan berat</p>
+                        <p><strong>Kegunaan:</strong> Pertunjukan Reog Ponorogo yang megah</p>
+                        <p><strong>Ciri Khas:</strong> Sangat besar dan berat (mencapai 50-60 kg), simbol kekuatan</p>
+                    </div>
+                </div>
+
+                <!-- Topeng Hudoq -->
+                <div class="jenis-card">
+                    <div class="jenis-header" style="background: linear-gradient(135deg, #A0522D 0%, #654321 100%);">
+                        <div class="jenis-image">
+                            <img src="images/topeng-hudoq.jpg" alt="Topeng Hudoq">
+                        </div>
+                        <h3>Topeng Hudoq</h3>
+                        <span class="region">Kalimantan Timur</span>
+                    </div>
+                    <div class="jenis-body">
+                        <p><strong>Karakteristik:</strong> Topeng tribal dengan hiasan bulu dan ornamen alami</p>
+                        <p><strong>Kegunaan:</strong> Upacara adat Dayak untuk kesuburan tanaman</p>
+                        <p><strong>Ciri Khas:</strong> Bentuk yang primitif dengan warna-warna natural</p>
+                    </div>
+                </div>
+
+                <!-- Topeng Monyet -->
+                <div class="jenis-card">
+                    <div class="jenis-header" style="background: linear-gradient(135deg, #8B4513 0%, #5C4033 100%);">
+                        <div class="jenis-image">
+                            <img src="images/topeng-monyet.jpg" alt="Topeng Monyet">
+                        </div>
+                        <h3>Topeng Monyet</h3>
+                        <span class="region">Berbagai Daerah</span>
+                    </div>
+                    <div class="jenis-body">
+                        <p><strong>Karakteristik:</strong> Topeng yang menggambarkan karakter Hanoman atau kera putih</p>
+                        <p><strong>Kegunaan:</strong> Pertunjukan Ramayana dan cerita pewayangan</p>
+                        <p><strong>Ciri Khas:</strong> Hidung pesek, mulut terbuka menampakkan gigi</p>
+                    </div>
+                </div>
+
+                <!-- Topeng Panji -->
+                <div class="jenis-card">
+                    <div class="jenis-header" style="background: linear-gradient(135deg, #CD853F 0%, #8B4513 100%);">
+                        <div class="jenis-image">
+                            <img src="images/topeng-panji.jpg" alt="Topeng Panji">
+                        </div>
+                        <h3>Topeng Panji</h3>
+                        <span class="region">Jawa Tengah & Jawa Timur</span>
+                    </div>
+                    <div class="jenis-body">
+                        <p><strong>Karakteristik:</strong> Topeng halus dengan wajah tampan dan mata setengah tertutup</p>
+                        <p><strong>Kegunaan:</strong> Memerankan tokoh Panji dalam berbagai pertunjukan</p>
+                        <p><strong>Ciri Khas:</strong> Ekspresi tenang, menggambarkan kesatria yang bijaksana</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Klasifikasi Berdasarkan Fungsi</h2>
+            <div class="klasifikasi-grid">
+                <div class="klasifikasi-card">
+                    <h3>🙏 Topeng Ritual/Sakral</h3>
+                    <p>Topeng yang digunakan dalam upacara keagamaan dan ritual spiritual. Contoh: Topeng Barong, Topeng Hudoq.</p>
+                </div>
+                <div class="klasifikasi-card">
+                    <h3>🎭 Topeng Pertunjukan</h3>
+                    <p>Topeng untuk hiburan dan seni pertunjukan. Contoh: Topeng Cirebon, Topeng Betawi.</p>
+                </div>
+                <div class="klasifikasi-card">
+                    <h3>🎨 Topeng Dekoratif</h3>
+                    <p>Topeng sebagai karya seni untuk pajangan dan koleksi.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Galeri Topeng Nusantara. Melestarikan Budaya Indonesia.</p>
+    </footer>
+
+    <script>
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Stagger animation for cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.jenis-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>

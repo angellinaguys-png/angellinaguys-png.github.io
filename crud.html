@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Data - Galeri Topeng Nusantara</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #3e2723 0%, #4e342e 50%, #5d4037 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .logo {
+            font-size: 2rem;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #d2691e 0%, #8b4513 100%);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #f4a460 0%, #daa520 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Form Section */
+        .form-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-section h2 {
+            font-size: 1.8rem;
+            color: #f4a460;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        /* Image Upload Section */
+        .image-upload-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .image-preview-container {
+            width: 100%;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .image-preview-container:hover {
+            border-color: #d2691e;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .image-preview-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .image-placeholder {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .image-placeholder-icon {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #d2691e 0%, #8b4513 100%);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .upload-btn-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* Form Fields */
+        .form-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 0.8rem;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #d2691e;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group select option {
+            background: #3e2723;
+            color: #fff;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d2691e 0%, #8b4513 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Messages */
+        .message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #4caf50;
+        }
+
+        .error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #f44336;
+        }
+
+        /* Table Section */
+        .table-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            animation: slideUp 0.5s ease 0.2s backwards;
+        }
+
+        .table-section h2 {
+            font-size: 1.8rem;
+            color: #f4a460;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #f4a460;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .table-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-edit, .btn-delete {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: rgba(33, 150, 243, 0.3);
+            color: #2196f3;
+            border: 1px solid rgba(33, 150, 243, 0.5);
+        }
+
+        .btn-edit:hover {
+            background: rgba(33, 150, 243, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-delete {
+            background: rgba(244, 67, 54, 0.3);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.5);
+        }
+
+        .btn-delete:hover {
+            background: rgba(244, 67, 54, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .table-container {
+                overflow-x: scroll;
+            }
+
+            table {
+                min-width: 800px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="logo">🎭</span>
+                <span class="brand-text">Topeng Nusantara</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="sejarah.html">Sejarah Topeng</a></li>
+                <li><a href="jenis.html">Jenis-Jenis Topeng</a></li>
+                <li><a href="crud.html" class="active">Kelola Data</a></li>
+            </ul>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1>Kelola Data Topeng</h1>
+            <p class="subtitle">Tambah, Edit, dan Hapus Koleksi Topeng</p>
+        </div>
+
+        <div class="form-section">
+            <h2>📝 <span id="formTitle">Tambah Topeng Baru</span></h2>
+            <form id="topengForm">
+                <div class="form-grid">
+                    <!-- Image Upload Section -->
+                    <div class="image-upload-section">
+                        <div class="image-preview-container" id="imagePreview">
+                            <div class="image-placeholder">
+                                <div class="image-placeholder-icon">🎭</div>
+                                <p>Preview Gambar Topeng</p>
+                            </div>
+                        </div>
+                        <div class="upload-btn-wrapper">
+                            <button type="button" class="upload-btn">📷 Pilih Gambar</button>
+                            <input type="file" id="imageInput" accept="image/*">
+                        </div>
+                        <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem; text-align: center;">
+                            Format: JPG, PNG, max 5MB
+                        </p>
+                    </div>
+
+                    <!-- Form Fields -->
+                    <div class="form-fields">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nama Topeng *</label>
+                                <input type="text" id="namaTopeng" required placeholder="Contoh: Topeng Panji">
+                            </div>
+                            <div class="form-group">
+                                <label>Asal Daerah *</label>
+                                <input type="text" id="asalDaerah" required placeholder="Contoh: Jawa Timur">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Jenis Topeng *</label>
+                                <select id="jenis" required>
+                                    <option value="">Pilih Jenis</option>
+                                    <option value="Topeng Tari">Topeng Tari</option>
+                                    <option value="Topeng Sakral">Topeng Sakral</option>
+                                    <option value="Topeng Pertunjukan">Topeng Pertunjukan</option>
+                                    <option value="Topeng Dekoratif">Topeng Dekoratif</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Tahun Pembuatan</label>
+                                <input type="number" id="tahunPembuatan" placeholder="Contoh: 1950">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            
+                        
+                        <div class="form-group">
+                            <label>Deskripsi</label>
+                            <textarea id="deskripsi" rows="3" placeholder="Jelaskan tentang topeng ini..."></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <span id="btnText">✓ Simpan Data</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="btnCancel" onclick="cancelEdit()" style="display: none;">
+                                ✕ Batal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="message success" id="successMessage">✓ Data berhasil disimpan!</div>
+                <div class="message error" id="errorMessage">✕ Gagal menyimpan data!</div>
+            </form>
+        </div>
+
+        <div class="table-section">
+            <h2>📋 Daftar Koleksi Topeng</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Gambar</th>
+                            <th>Nama Topeng</th>
+                            <th>Asal Daerah</th>
+                            <th>Jenis</th>
+                            <th>Tahun</th>
+                            <th>Deskripsi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topengTable">
+                        <!-- Data akan ditampilkan di sini -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Galeri Topeng Nusantara. Melestarikan Budaya Indonesia.</p>
+    </footer>
+
+    <script>
+        // Array untuk menyimpan data topeng
+        let topengData = [];
+        let editMode = false;
+        let editIndex = null;
+        let currentImageData = null;
+
+        // Load data dari localStorage saat halaman dimuat
+        window.addEventListener('load', function() {
+            const savedData = localStorage.getItem('topengData');
+            if (savedData) {
+                topengData = JSON.parse(savedData);
+                renderTable();
+            }
+        });
+
+        // Image Preview Handler
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showMessage('error', 'Ukuran file terlalu besar! Maksimal 5MB');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    currentImageData = event.target.result;
+                    const preview = document.getElementById('imagePreview');
+                    preview.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form Submit Handler
+        document.getElementById('topengForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const data = {
+                nama: document.getElementById('namaTopeng').value,
+                daerah: document.getElementById('asalDaerah').value,
+                jenis: document.getElementById('jenis').value,
+                tahun: document.getElementById('tahunPembuatan').value || '-',
+                
+                deskripsi: document.getElementById('deskripsi').value || '-',
+                image: currentImageData || null
+            };
+
+            if (editMode) {
+                // Update existing data
+                topengData[editIndex] = data;
+                showMessage('success', '✓ Data berhasil diupdate!');
+                editMode = false;
+                editIndex = null;
+                document.getElementById('btnCancel').style.display = 'none';
+                document.getElementById('formTitle').textContent = 'Tambah Topeng Baru';
+                document.getElementById('btnText').textContent = '✓ Simpan Data';
+            } else {
+                // Add new data
+                topengData.push(data);
+                showMessage('success', '✓ Data berhasil ditambahkan!');
+            }
+
+            // Save to localStorage
+            localStorage.setItem('topengData', JSON.stringify(topengData));
+            
+            // Render table and reset form
+            renderTable();
+            resetForm();
+        });
+
+        // Render Table
+        function renderTable() {
+            const tbody = document.getElementById('topengTable');
+            
+            if (topengData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: rgba(255,255,255,0.5);">Belum ada data topeng</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = topengData.map((item, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>
+                        ${item.image ? 
+                            `<img src="${item.image}" class="table-image" alt="${item.nama}">` : 
+                            `<div style="width:60px;height:60px;background:#8b4513;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:2rem;">🎭</div>`
+                        }
+                    </td>
+                    <td>${item.nama}</td>
+                    <td>${item.daerah}</td>
+                    <td>${item.jenis}</td>
+                    <td>${item.tahun}</td>
+                    <td>${item.deskripsi}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-edit" onclick="editData(${index})">✏️ Edit</button>
+                            <button class="btn-delete" onclick="deleteData(${index})">🗑️ Hapus</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Edit Data
+        function editData(index) {
+            editMode = true;
+            editIndex = index;
+            const data = topengData[index];
+            
+            document.getElementById('formTitle').textContent = 'Edit Topeng';
+            document.getElementById('btnText').textContent = '✓ Update Data';
+            document.getElementById('btnCancel').style.display = 'block';
+            
+            // Populate form
+            document.getElementById('namaTopeng').value = data.nama;
+            document.getElementById('asalDaerah').value = data.daerah;
+            document.getElementById('jenis').value = data.jenis;
+            document.getElementById('tahunPembuatan').value = data.tahun === '-' ? '' : data.tahun;
+        
+            document.getElementById('deskripsi').value = data.deskripsi === '-' ? '' : data.deskripsi;
+            
+            // Show image if exists
+            if (data.image) {
+                currentImageData = data.image;
+                document.getElementById('imagePreview').innerHTML = `<img src="${data.image}" alt="Preview">`;
+            }
+            
+            // Scroll to form
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Cancel Edit
+        function cancelEdit() {
+            editMode = false;
+            editIndex = null;
+            document.getElementById('formTitle').textContent = 'Tambah Topeng Baru';
+            document.getElementById('btnText').textContent = '✓ Simpan Data';
+            document.getElementById('btnCancel').style.display = 'none';
+            resetForm();
+        }
+
+        // Delete Data
+        function deleteData(index) {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                topengData.splice(index, 1);
+                localStorage.setItem('topengData', JSON.stringify(topengData));
+                renderTable();
+                showMessage('success', '✓ Data berhasil dihapus!');
+            }
+        }
+
+        // Show Message
+        function showMessage(type, text) {
+            const msgElement = type === 'success' ? 
+                document.getElementById('successMessage') : 
+                document.getElementById('errorMessage');
+            
+            msgElement.textContent = text;
+            msgElement.style.display = 'block';
+            
+            setTimeout(() => {
+                msgElement.style.display = 'none';
+            }, 3000);
+        }
+
+        // Reset Form
+        function resetForm() {
+            document.getElementById('topengForm').reset();
+            document.getElementById('imagePreview').innerHTML = `
+                <div class="image-placeholder">
+                    <div class="image-placeholder-icon">🎭</div>
+                    <p>Preview Gambar Topeng</p>
+                </div>
+            `;
+            currentImageData = null;
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

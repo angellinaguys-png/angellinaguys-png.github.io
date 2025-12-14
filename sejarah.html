@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sejarah Topeng - Galeri Topeng Nusantara</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #3e2723 0%, #4e342e 50%, #5d4037 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .logo {
+            font-size: 2rem;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #d2691e 0%, #8b4513 100%);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease;
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.3) 0%, rgba(101, 67, 33, 0.3) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 3rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #f4a460 0%, #daa520 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Timeline Container */
+        .timeline-section {
+            margin-bottom: 4rem;
+        }
+
+        .timeline-section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #f4a460 0%, #daa520 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #d2691e 0%, #8b4513 100%);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 0;
+            margin-right: 50%;
+            padding-right: 3rem;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 50%;
+            padding-left: 3rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 20px;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #d2691e 0%, #cd853f 100%);
+            border: 4px solid #3e2723;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(210, 105, 30, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(210, 105, 30, 0); }
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .timeline-era {
+            display: inline-block;
+            background: linear-gradient(135deg, #d2691e 0%, #cd853f 100%);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.8rem;
+            color: #f4a460;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-content p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        /* Info Cards */
+        .info-section {
+            margin-bottom: 4rem;
+        }
+
+        .info-section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #f4a460 0%, #daa520 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            color: #f4a460;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-card li {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .info-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #d2691e;
+            font-weight: bold;
+        }
+
+        .info-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+        }
+
+        /* Quote Section */
+        .quote-section {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.3) 0%, rgba(101, 67, 33, 0.3) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 3rem 0;
+            animation: fadeIn 1s ease;
+        }
+
+        .quote-section blockquote {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .quote-section cite {
+            color: #f4a460;
+            font-size: 1.1rem;
+            font-style: normal;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-dot {
+                left: 30px;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 60px;
+                margin-right: 0;
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="particles" id="particles"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="logo">🎭</span>
+                <span class="brand-text">Topeng Nusantara</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="sejarah.html" class="active">Sejarah Topeng</a></li>
+                <li><a href="jenis.html">Jenis-Jenis Topeng</a></li>
+                <li><a href="crud.html">Kelola Data</a></li>
+            </ul>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1>Sejarah Topeng di Indonesia</h1>
+            <p class="subtitle">Perjalanan Panjang Seni Topeng dalam Budaya Nusantara</p>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="timeline-section">
+            <h2>📜 Garis Waktu Perkembangan Topeng</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-era">Zaman Prasejarah</span>
+                        <h3>🏛️ Asal Usul Topeng</h3>
+                        <p>Topeng telah menjadi bagian integral dari kehidupan masyarakat Indonesia sejak zaman prasejarah. Penggunaan topeng diperkirakan sudah ada sejak masa animisme dan dinamisme, di mana topeng digunakan dalam ritual kepercayaan kepada roh nenek moyang.</p>
+                        <p>Topeng berfungsi sebagai media untuk berkomunikasi dengan dunia spiritual, menampilkan karakter tertentu dalam upacara keagamaan, dan sebagai sarana hiburan dalam berbagai pertunjukan seni.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-era">Abad 4-15 Masehi</span>
+                        <h3>🕉️ Pengaruh Hindu-Buddha</h3>
+                        <p>Pada masa masuknya agama Hindu-Buddha ke Nusantara, seni topeng mengalami perkembangan pesat. Cerita-cerita dari epos Ramayana dan Mahabharata mulai diadaptasi ke dalam pertunjukan topeng.</p>
+                        <p>Periode ini melahirkan berbagai jenis topeng dengan karakteristik yang lebih kompleks, termasuk topeng yang menggambarkan dewa-dewi, tokoh pahlawan, dan karakter antagonis dari kisah-kisah epik tersebut. Topeng mulai memiliki standarisasi bentuk dan ekspresi sesuai dengan karakter yang diwakili.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-era">Abad 15-18 Masehi</span>
+                        <h3>🌙 Era Kerajaan Islam</h3>
+                        <p>Ketika Islam masuk ke Indonesia, seni topeng beradaptasi dengan nilai-nilai baru. Topeng tidak lagi hanya digunakan dalam konteks ritual Hindu-Buddha, tetapi juga berkembang menjadi seni pertunjukan yang lebih populer dan menghibur.</p>
+                        <p>Topeng Cirebon berkembang pada masa Kesultanan Cirebon dengan memadukan unsur-unsur Islam, Hindu, dan tradisi lokal Sunda. Masa ini juga melihat perkembangan Topeng Betawi dan Topeng Malangan yang khas.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-era">Abad 19-20 Masehi</span>
+                        <h3>🎭 Masa Kolonial</h3>
+                        <p>Pada masa kolonial Belanda, seni topeng sempat mengalami tekanan karena dianggap sebagai bentuk kebudayaan yang "primitif". Namun, seni topeng tetap bertahan sebagai bentuk resistensi budaya dan identitas nasional.</p>
+                        <p>Seniman topeng terus melestarikan tradisi mereka di tengah perubahan zaman. Beberapa pertunjukan topeng bahkan menjadi media untuk menyampaikan kritik sosial terhadap penjajah secara terselubung.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-era">1945 - Sekarang</span>
+                        <h3>🌟 Era Modern dan Kontemporer</h3>
+                        <p>Setelah kemerdekaan Indonesia, pemerintah mulai mengakui dan mendukung pelestarian seni topeng sebagai bagian dari identitas budaya bangsa. Topeng tidak hanya dipertahankan sebagai seni tradisional, tetapi juga dikembangkan dalam bentuk kontemporer.</p>
+                        <p>Di era modern ini, topeng telah berkembang menjadi objek seni yang dipamerkan di museum dan galeri internasional. UNESCO telah mengakui beberapa seni topeng Indonesia sebagai Warisan Budaya Takbenda Manusia, termasuk Wayang Topeng Cirebon.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quote Section -->
+        <div class="quote-section">
+            <blockquote>
+                "Topeng bukan sekadar penutup wajah, tetapi jendela menuju jiwa karakter yang diperankan dan cermin dari nilai-nilai budaya masyarakat yang melahirkannya."
+            </blockquote>
+            <cite>— Pepatah Seniman Topeng Nusantara</cite>
+        </div>
+
+        <!-- Fungsi dan Makna Section -->
+        <div class="info-section">
+            <h2>🎭 Fungsi dan Makna Topeng</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>🙏 Fungsi Religius</h3>
+                    <p>Topeng digunakan dalam upacara keagamaan dan ritual spiritual untuk berkomunikasi dengan dunia gaib. Pemakainya dianggap menjadi medium antara dunia manusia dan dunia supernatural.</p>
+                </div>
+                <div class="info-card">
+                    <h3>👥 Fungsi Sosial</h3>
+                    <p>Sebagai media pendidikan moral dan nilai-nilai kehidupan melalui pertunjukan. Cerita yang dibawakan sering mengandung pesan tentang kebaikan, kejahatan, dan kehidupan bermasyarakat.</p>
+                </div>
+                <div class="info-card">
+                    <h3>🎨 Fungsi Estetika</h3>
+                    <p>Topeng merupakan karya seni yang memiliki nilai keindahan tinggi. Pembuatannya memerlukan keterampilan khusus dalam ukir, pahat, dan pewarnaan yang diwariskan turun-temurun.</p>
+                </div>
+                <div class="info-card">
+                    <h3>💰 Fungsi Ekonomi</h3>
+                    <p>Menjadi mata pencaharian bagi para pengrajin dan seniman topeng. Industri topeng mendukung ekonomi lokal melalui pembuatan, pertunjukan, dan pariwisata budaya.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teknik dan Bahan Section -->
+        <div class="info-section">
+            <h2>🔨 Teknik Pembuatan Topeng</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>🌳 Pemilihan Bahan</h3>
+                    <ul>
+                        <li>Kayu pilihan seperti pule, waru, atau sengon</li>
+                        <li>Kayu harus dikeringkan selama berbulan-bulan</li>
+                        <li>Tekstur kayu mempengaruhi hasil akhir ukiran</li>
+                        <li>Beberapa daerah menggunakan bahan kulit atau kain</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>✏️ Proses Pembuatan</h3>
+                    <ul>
+                        <li>Desain sketsa berdasarkan karakter yang diinginkan</li>
+                        <li>Proses pahat dan ukir memakan waktu berminggu-minggu</li>
+                        <li>Penghalusan permukaan dengan teliti</li>
+                        <li>Pewarnaan menggunakan cat alami atau sintetis</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>🎨 Finishing dan Detail</h3>
+                    <ul>
+                        <li>Pewarnaan bertahap dengan lapisan-lapisan cat</li>
+                        <li>Penambahan detail seperti kumis, jenggot, atau mahkota</li>
+                        <li>Proses pengeringan dan pelapisan pelindung</li>
+                        <li>Ritual khusus untuk topeng sakral</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pelestarian Section -->
+        <div class="info-section">
+            <h2>🏆 Upaya Pelestarian</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>📚 Pendidikan Formal</h3>
+                    <p>Seni topeng dimasukkan dalam kurikulum pendidikan seni dan budaya di sekolah-sekolah. Program khusus juga dibuat di perguruan tinggi seni untuk mempelajari teknik pembuatan dan pertunjukan topeng secara mendalam.</p>
+                </div>
+                <div class="info-card">
+                    <h3>🎪 Festival dan Pameran</h3>
+                    <p>Berbagai festival topeng diselenggarakan secara rutin di berbagai daerah, seperti Festival Topeng Cirebon dan Malang Mask Festival. Pameran topeng juga diadakan di museum nasional dan internasional.</p>
+                </div>
+                <div class="info-card">
+                    <h3>👨‍🎓 Pelatihan dan Workshop</h3>
+                    <p>Sanggar-sanggar seni dan lembaga budaya mengadakan pelatihan pembuatan topeng dan tari topeng untuk generasi muda. Program magang dengan pengrajin senior membantu transfer pengetahuan tradisional.</p>
+                </div>
+                <div class="info-card">
+                    <h3>🌐 Digitalisasi</h3>
+                    <p>Dokumentasi digital berupa foto, video, dan arsip online membantu pelestarian pengetahuan tentang topeng. Platform digital juga memperkenalkan seni topeng ke generasi muda dan dunia internasional.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Galeri Topeng Nusantara. Melestarikan Budaya Indonesia.</p>
+    </footer>
+
+    <script>
+        // Create animated particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Stagger animation for timeline items
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach((item, index) => {
+                item.style.animationDelay = `${index * 0.2}s`;
+            });
+
+            const infoCards = document.querySelectorAll('.info-card');
+            infoCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>

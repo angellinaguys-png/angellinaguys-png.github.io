@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Galeri Topeng Nusantara</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #3e2723 0%, #4e342e 50%, #5d4037 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .logo {
+            font-size: 2rem;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu li {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .nav-menu li:nth-child(1) { animation-delay: 0.1s; }
+        .nav-menu li:nth-child(2) { animation-delay: 0.2s; }
+        .nav-menu li:nth-child(3) { animation-delay: 0.3s; }
+        .nav-menu li:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-menu a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #d2691e 0%, #cd853f 100%);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-menu a:hover::after, .nav-menu a.active::after {
+            width: 80%;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #d2691e 0%, #8b4513 100%);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .btn-logout:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section dengan Pola Topeng yang Lebih Jelas */
+        .hero-section {
+            background: 
+                linear-gradient(135deg, rgba(139, 69, 19, 0.85) 0%, rgba(101, 67, 33, 0.85) 100%);
+            border-radius: 30px;
+            padding: 4rem 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: zoomIn 0.8s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Background Pattern Layer */
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        /* Pola Topeng Tradisional */
+        .mask-pattern {
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.06;
+            z-index: 0;
+            filter: blur(1px);
+        }
+
+        .mask-pattern:nth-child(1) {
+            top: -40px;
+            left: -40px;
+            transform: rotate(-15deg);
+            animation: floatMask1 8s ease-in-out infinite;
+        }
+
+        .mask-pattern:nth-child(2) {
+            top: -20px;
+            right: -40px;
+            transform: rotate(15deg);
+            animation: floatMask2 10s ease-in-out infinite;
+        }
+
+        .mask-pattern:nth-child(3) {
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%) rotate(8deg);
+            animation: floatMask3 12s ease-in-out infinite;
+        }
+
+        .mask-pattern:nth-child(4) {
+            top: 50%;
+            left: -30px;
+            transform: translateY(-50%) rotate(-20deg);
+            animation: floatMask1 9s ease-in-out infinite reverse;
+            font-size: 6rem;
+        }
+
+        .mask-pattern:nth-child(5) {
+            top: 50%;
+            right: -30px;
+            transform: translateY(-50%) rotate(20deg);
+            animation: floatMask2 11s ease-in-out infinite reverse;
+            font-size: 6rem;
+        }
+
+        @keyframes floatMask1 {
+            0%, 100% { transform: translateY(0) rotate(-15deg); }
+            50% { transform: translateY(-30px) rotate(-10deg); }
+        }
+
+        @keyframes floatMask2 {
+            0%, 100% { transform: translateY(0) rotate(15deg); }
+            50% { transform: translateY(-35px) rotate(20deg); }
+        }
+
+        @keyframes floatMask3 {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(8deg); }
+            50% { transform: translateX(-50%) translateY(-25px) rotate(12deg); }
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInLeft 0.8s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.95);
+            animation: slideInRight 0.8s ease;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Stats Container */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.2s; }
+        .stat-card:nth-child(2) { animation-delay: 0.4s; }
+        .stat-card:nth-child(3) { animation-delay: 0.6s; }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .stat-card:hover .stat-icon {
+            animation: spin 0.8s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            to { transform: rotate(360deg) scale(1); }
+        }
+
+        .stat-info h3 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #d2691e 0%, #cd853f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-info p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Content Section */
+        .content-section {
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease;
+        }
+
+        .content-section h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #f4a460 0%, #daa520 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.02); }
+        }
+
+        /* About Grid */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .about-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-card:nth-child(1) { animation-delay: 0.3s; }
+        .about-card:nth-child(2) { animation-delay: 0.5s; }
+        .about-card:nth-child(3) { animation-delay: 0.7s; }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        .about-card:hover::before {
+            transform: scale(1);
+        }
+
+        .about-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .about-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Collection Grid */
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .collection-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            animation: fadeInScale 0.5s ease;
+            cursor: pointer;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .collection-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .collection-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #d2691e;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .collection-card p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.3rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease;
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .hero-section p {
+                font-size: 1rem;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .mask-pattern {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="particles" id="particles"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="logo">🎭</span>
+                <span class="brand-text">Topeng Nusantara</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="sejarah.html">Sejarah Topeng</a></li>
+                <li><a href="jenis.html">Jenis-Jenis Topeng</a></li>
+                <li><a href="crud.html">Kelola Data</a></li>
+            </ul>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="hero-section">
+            <!-- Pola Topeng Background -->
+            <div class="mask-pattern">🎭</div>
+            <div class="mask-pattern">👹</div>
+            <div class="mask-pattern">🎭</div>
+            <div class="mask-pattern">👺</div>
+            <div class="mask-pattern">🎭</div>
+            
+            <div class="hero-content">
+                <h1>Selamat Datang di Galeri Topeng Nusantara</h1>
+                <p>Melestarikan Warisan Budaya Indonesia Melalui Seni Topeng Tradisional</p>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <h3 id="totalTopeng">6</h3>
+                    <p>Total Koleksi</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🗺️</div>
+                <div class="stat-info">
+                    <h3 id="totalDaerah">4</h3>
+                    <p>Daerah Asal</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎨</div>
+                <div class="stat-info">
+                    <h3 id="totalJenis">4</h3>
+                    <p>Jenis Topeng</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Tentang Topeng Nusantara</h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>🎭 Warisan Budaya</h3>
+                    <p>Topeng merupakan salah satu bentuk seni tradisional yang telah menjadi bagian penting dari kebudayaan Indonesia selama berabad-abad.</p>
+                </div>
+                <div class="about-card">
+                    <h3>🌟 Nilai Spiritual</h3>
+                    <p>Banyak topeng tradisional Indonesia memiliki nilai spiritual dan digunakan dalam upacara adat serta pertunjukan sakral.</p>
+                </div>
+                <div class="about-card">
+                    <h3>🎨 Keragaman Seni</h3>
+                    <p>Setiap daerah di Indonesia memiliki karakteristik topeng yang unik, mencerminkan kekayaan budaya Nusantara.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Koleksi Terbaru</h2>
+            <div class="collection-grid" id="recentCollection">
+                <div class="collection-card">
+                    <h3>🎭 Topeng Barong</h3>
+                    <p><strong>Daerah:</strong> Bali</p>
+                    <p><strong>Jenis:</strong> Sakral</p>
+                    <p>Topeng ikonik dari Bali yang melambangkan kebaikan</p>
+                </div>
+                <div class="collection-card">
+                    <h3>🎭 Topeng Cirebon</h3>
+                    <p><strong>Daerah:</strong> Jawa Barat</p>
+                    <p><strong>Jenis:</strong> Tari</p>
+                    <p>Topeng klasik untuk tari tradisional Cirebon</p>
+                </div>
+                <div class="collection-card">
+                    <h3>🎭 Topeng Reog</h3>
+                    <p><strong>Daerah:</strong> Jawa Timur</p>
+                    <p><strong>Jenis:</strong> Pertunjukan</p>
+                    <p>Topeng megah dari kesenian Reog Ponorogo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Galeri Topeng Nusantara. Melestarikan Budaya Indonesia.</p>
+    </footer>
+
+    <script>
+        // Create animated particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                alert('Logout berhasil!');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Animate numbers counting up
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Add stagger animation to collection cards
+        function animateCollectionCards() {
+            const cards = document.querySelectorAll('.collection-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            createParticles();
+            animateValue('totalTopeng', 0, 6, 1500);
+            animateValue('totalDaerah', 0, 4, 1500);
+            animateValue('totalJenis', 0, 4, 1500);
+            animateCollectionCards();
+        });
+    </script>
+</body>
+</html>
